@@ -10,7 +10,8 @@ class Room extends React.Component {
     user: null,
     usersInRoom: 0,
     usersAreActive: "offline",
-    currentRoom: null
+    currentRoom: null,
+    peopleInRoom: {}
   };
 
   componentDidMount() {
@@ -40,16 +41,28 @@ class Room extends React.Component {
           hooks: {
             onMessage: message => {
               let oldMessages = this.state.messages;
+
               oldMessages.push(message);
-              // console.log(currentUser.);
               this.setState({
                 messages: oldMessages,
                 usersInRoom: currentUser.users.length
               });
             },
             onPresenceChanged: (state, user) => {
+              this.setState({ user: currentUser });
+
+              let people = Object.keys(this.state.user.presenceStore).length;
+              console.log(people);
+              if (people === this.state.usersInRoom) {
+                Object.keys(this.state.user.presenceStore).forEach(status => {
+                  console.log(status);
+                  console.log(this.state.user.presenceStore[status]);
+                });
+              }
+              this.setState({ peopleInRoom: this.state.user.presenceStore });
+
               if (user.name === chatManager.userId) {
-                console.log(`User ${user.name} is ${state.current}`);
+                // console.log(`User ${user.name} is ${state.current}`)
                 this.setState({ usersAreActive: state.current });
               }
             }
@@ -81,6 +94,26 @@ class Room extends React.Component {
         console.log(`Error fetching messages: ${err}`);
       });
   };
+
+  //#region Create Room
+  createRoom = () => {
+    this.state.user
+      .createRoom({
+        name: "testAGain",
+        private: true,
+        addUserIds: ["AB", "CR"],
+        customData: {
+          foo: 42
+        }
+      })
+      .then(room => {
+        console.log(`Created room called ${room.name}`);
+      })
+      .catch(err => {
+        console.log(`Error creating room ${err}`);
+      });
+  };
+  //#endregion
 
   handleChange = e => {
     this.setState({ value: e.target.value });
@@ -129,12 +162,13 @@ class Room extends React.Component {
   };
 
   render() {
-    // console.log(this.state.user);s
     return (
       <div>
         <h1>
-          Room{this.state.currentRoom} ({this.state.usersInRoom} users)
+          Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
+
+        <button onClick={this.createRoom}>New Room</button>
         <form action="">
           <input type="text" onChange={this.handleChange} />
           <input type="submit" onClick={this.send} />
