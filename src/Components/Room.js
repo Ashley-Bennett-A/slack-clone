@@ -1,6 +1,8 @@
 import React from "react";
 import Chatkit from "@pusher/chatkit-client";
 import Message from "./Message.js";
+let creatingButtons;
+
 
 class Room extends React.Component {
   state = {
@@ -12,7 +14,9 @@ class Room extends React.Component {
     usersInRoom: 0,
     usersAreActive: "offline",
     currentRoom: null,
-    peopleInRoom: {}
+    peopleInRoom: {},
+
+    test: []
   };
 
   componentDidMount() {
@@ -24,7 +28,7 @@ class Room extends React.Component {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: "v1:us1:e26280f8-acac-4da9-9e2a-80cd549547f8",
 
-      userId: "AB",
+      userId: "jz",
 
       tokenProvider: tokenProvider
     });
@@ -53,15 +57,21 @@ class Room extends React.Component {
             },
             onPresenceChanged: (state, user) => {
               this.setState({ user: currentUser });
-
+              let array = []
+              let badCode;
               let people = Object.keys(this.state.user.presenceStore).length;
-              console.log(people);
+              // console.log(people);
               if (people === this.state.usersInRoom) {
                 Object.keys(this.state.user.presenceStore).forEach(status => {
-                  console.log(status);
-                  console.log(this.state.user.presenceStore[status]);
+                  creatingButtons = this.state.user.presenceStore[status]
+                  badCode = status + " " + creatingButtons
+                  console.log(badCode)
+                  if(badCode.split(" ")[1] === "online"){
+                  array.push(badCode)
+                  }
                 });
               }
+              this.setState({ test: array })
               this.setState({ peopleInRoom: this.state.user.presenceStore });
 
               if (user.name === chatManager.userId) {
@@ -102,8 +112,8 @@ class Room extends React.Component {
   createRoom = () => {
     this.state.user
       .createRoom({
-        name: "testAGain",
-        private: true,
+        name: `New ${this.state.user.id} Room`,
+        private: false,
         addUserIds: ["AB", "CR"],
         customData: {
           foo: 42
@@ -117,6 +127,10 @@ class Room extends React.Component {
       });
   };
   //#endregion
+
+  
+
+
 
   handleChange = e => {
     this.setState({ value: e.target.value });
@@ -140,6 +154,7 @@ class Room extends React.Component {
         console.log(`Error fetching messages: ${err}`);
       });
 
+      
     // currentUser.subscribeToRoomMultipart({
     //   roomId: this.state.currentRoom,
 
@@ -170,6 +185,14 @@ class Room extends React.Component {
         <h1>
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
+        {this.state.test.map(status => {
+          console.log(status)
+          return (
+            <div>
+              <button>{status}</button>
+            </div>
+          )
+        })}
         {this.state.rooms.map(room => {
           return (
             <button key={room.id} id={room.id} onClick={this.roomChange}>
