@@ -13,10 +13,11 @@ class Room extends React.Component {
     messageToSend: "",
     user: undefined,
     usersInRoom: 0,
-    usersAreActive: "offline"
+    usersAreActive: "offline",
+    peopleInRoom: {}
   };
 
-  
+
 
   componentDidMount() {
     const tokenProvider = new Chatkit.TokenProvider({
@@ -25,6 +26,7 @@ class Room extends React.Component {
     });
 
     const chatManager = new Chatkit.ChatManager({
+
       instanceLocator: "v1:us1:e26280f8-acac-4da9-9e2a-80cd549547f8",
       userId: "jz",
       tokenProvider: tokenProvider
@@ -33,24 +35,42 @@ class Room extends React.Component {
     chatManager
       .connect()
       .then(currentUser => {
-        this.setState({ user: currentUser });
+
         currentUser.subscribeToRoomMultipart({
           roomId: currentUser.rooms[0].id,
-    
+          
+
           hooks: {
             onMessage: message => {
               let oldMessages = this.state.messages;
+              
               oldMessages.push(message);
               this.setState({ messages: oldMessages });
-              this.setState({ usersInRoom: currentUser.users.length})
+              this.setState({ usersInRoom: currentUser.users.length })
+              this.setState({ usersInRoom: currentUser.users.length })
+
               
-             
             },
-             onPresenceChanged: (state, user) => {
-               if (user.name === chatManager.userId){
-              console.log(`User ${user.name} is ${state.current}`)
-              this.setState({usersAreActive: state.current})
-               }
+            onPresenceChanged: (state, user) => {
+            
+
+              this.setState({ user: currentUser });
+             
+              let people = Object.keys(this.state.user.presenceStore).length
+              console.log(people)
+              if(people === this.state.usersInRoom){
+                Object.keys(this.state.user.presenceStore).forEach((status) => {
+                  console.log(status)
+                  console.log(this.state.user.presenceStore[status])
+                })
+              }
+              this.setState({ peopleInRoom: this.state.user.presenceStore }) 
+
+              if (user.name === chatManager.userId) {
+                // console.log(`User ${user.name} is ${state.current}`)
+                this.setState({ usersAreActive: state.current })
+
+              }
             }
           },
           messageLimit: 20,
@@ -59,7 +79,7 @@ class Room extends React.Component {
         currentUser
           .fetchMultipartMessages({
             roomId: "19442511",
-           
+
           })
           .then(messages => {
             this.setState({
@@ -72,30 +92,50 @@ class Room extends React.Component {
       })
       .catch(err => console.log(err));
   }
-  
+
   send = e => {
     e.preventDefault();
     this.state.user.sendSimpleMessage({
       text: this.state.value,
       roomId: this.state.user.rooms[0].id
     });
-   
   };
+
+  //#region Create Room
+  createRoom = () => {
+
+    this.state.user.createRoom({
+        name: 'testAGain',
+        private: true,
+        addUserIds: ['AB', 'CR'],
+        customData: {
+          foo: 42
+        },
+      }).then(room => {
+        console.log(`Created room called ${room.name}`)
+      })
+      .catch(err => {
+        console.log(`Error creating room ${err}`)
+      })
+
+  }
+  //#endregion
 
   handleChange = e => {
     this.setState({ value: e.target.value });
   };
 
   render() {
-    console.log(this.state.messages);
     return (
       <div>
         <h1>Room ({this.state.usersInRoom} users)</h1>
+
+        <button onClick={this.createRoom}>New Room</button>
         <form action="">
           <input type="text" onChange={this.handleChange} />
           <input type="submit" onClick={this.send} />
         </form>
-      
+
         {this.state.messages.map(message => {
           return (
             <li>
@@ -104,7 +144,12 @@ class Room extends React.Component {
             </li>
           );
         })}
+        <div>
+
+        </div>
       </div>
+
+
     );
   }
 }
