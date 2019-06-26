@@ -24,7 +24,7 @@ class Room extends React.Component {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: "v1:us1:e26280f8-acac-4da9-9e2a-80cd549547f8",
 
-      userId: "AB",
+      userId: "CR",
 
       tokenProvider: tokenProvider
     });
