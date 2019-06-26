@@ -3,15 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-    "@pusher/chatkit-server": "^1.3.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-=======
     "@pusher/chatkit-client": "^1.6.0",
     "@pusher/chatkit-server": "^1.3.0",
->>>>>>> 3b320ee53f313f120da410b03bc5c97d294aa6a7
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
