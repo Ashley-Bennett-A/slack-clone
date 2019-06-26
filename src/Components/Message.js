@@ -32,7 +32,7 @@ class Message extends Component{
             align = "Left"
         }
         return (
-            <li className="MessageCont">
+            <li className={"MessageCont " + align}>
                 <div class="MessageAvatar"></div>
                 <p className="MessageUser">{this.props.sender}</p>
                 <p className={"MessageBody " + className}>{this.props.body}</p>

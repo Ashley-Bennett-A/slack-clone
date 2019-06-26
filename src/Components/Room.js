@@ -95,12 +95,13 @@ class Room extends React.Component {
           <input type="text" onChange={this.handleChange} />
           <input type="submit" onClick={this.send} />
         </form>
-      
-        {this.state.messages.map(message => {
-          return (
-              <Message user={this.state.user.id} sender={message.senderId} body={message.parts[0].payload.content} date={message.createdAt} />
-          );
-        })}
+        <div className="MessagesContainer">
+          {this.state.messages.map(message => {
+            return (
+                <Message user={this.state.user.id} sender={message.senderId} body={message.parts[0].payload.content} date={message.createdAt} />
+            );
+          })}
+        </div>
       </div>
     );
   }
