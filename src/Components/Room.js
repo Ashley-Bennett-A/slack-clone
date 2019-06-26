@@ -1,6 +1,6 @@
 import React from "react";
 import Chatkit from "@pusher/chatkit-client";
-
+import Message from "./Message.js"
 
 
 
@@ -26,7 +26,7 @@ class Room extends React.Component {
 
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: "v1:us1:e26280f8-acac-4da9-9e2a-80cd549547f8",
-      userId: "jz",
+      userId: "CR",
       tokenProvider: tokenProvider
     });
 
@@ -98,10 +98,7 @@ class Room extends React.Component {
       
         {this.state.messages.map(message => {
           return (
-            <li>
-              {message.senderId} {this.state.usersAreActive} said "{message.parts[0].payload.content}" @{" "}
-              {message.createdAt}
-            </li>
+              <Message user={this.state.user.id} sender={message.senderId} body={message.parts[0].payload.content} date={message.createdAt} />
           );
         })}
       </div>
