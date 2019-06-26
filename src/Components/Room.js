@@ -1,6 +1,6 @@
 import React from "react";
 import Chatkit from "@pusher/chatkit-client";
-import Message from "./Message.js"
+import Message from "./Message.js";
 
 class Room extends React.Component {
   state = {
@@ -83,19 +83,19 @@ class Room extends React.Component {
       text: this.state.value,
       roomId: this.state.currentRoom
     });
-    this.state.user
-      .fetchMultipartMessages({
-        roomId: this.state.currentRoom
-      })
-      .then(messages => {
-        // console.log;
-        this.setState({
-          messages: messages
-        });
-      })
-      .catch(err => {
-        console.log(`Error fetching messages: ${err}`);
-      });
+    // this.state.user
+    //   .fetchMultipartMessages({
+    //     roomId: this.state.currentRoom
+    //   })
+    //   .then(messages => {
+    //     // console.log;
+    //     this.setState({
+    //       messages: messages
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(`Error fetching messages: ${err}`);
+    //   });
   };
 
   //#region Create Room
@@ -170,7 +170,13 @@ class Room extends React.Component {
         <h1>
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
-
+        {this.state.rooms.map(room => {
+          return (
+            <button key={room.id} id={room.id} onClick={this.roomChange}>
+              {room.name}
+            </button>
+          );
+        })}
         <button onClick={this.createRoom}>New Room</button>
         <form action="">
           <input type="text" onChange={this.handleChange} />
@@ -179,19 +185,15 @@ class Room extends React.Component {
         <div className="MessagesContainer">
           {this.state.messages.map(message => {
             return (
-                <Message user={this.state.user.id} sender={message.senderId} body={message.parts[0].payload.content} date={message.createdAt} />
-
+              <Message
+                user={this.state.user.id}
+                sender={message.senderId}
+                body={message.parts[0].payload.content}
+                date={message.createdAt}
+              />
             );
           })}
         </div>
-
-        {this.state.rooms.map(room => {
-          return (
-            <button key={room.id} id={room.id} onClick={this.roomChange}>
-              {room.name}
-            </button>
-          );
-        })}
       </div>
     );
   }
