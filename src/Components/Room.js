@@ -7,9 +7,10 @@ class Room extends React.Component {
     value: "",
     messageToSend: "",
     rooms: [],
-    user: undefined,
+    user: null,
     usersInRoom: 0,
-    usersAreActive: "offline"
+    usersAreActive: "offline",
+    currentRoom: null
   };
 
   componentDidMount() {
@@ -27,10 +28,14 @@ class Room extends React.Component {
     chatManager
       .connect()
       .then(currentUser => {
-        this.setState({ user: currentUser, rooms: currentUser.rooms });
-        console.log(currentUser.rooms);
+        this.setState({
+          user: currentUser,
+          rooms: currentUser.rooms,
+          currentRoom: currentUser.rooms[0].id
+        });
+        // console.log(currentUser.rooms);
         currentUser.subscribeToRoomMultipart({
-          roomId: currentUser.rooms[2].id,
+          roomId: this.state.currentRoom,
 
           hooks: {
             onMessage: message => {
@@ -51,40 +56,85 @@ class Room extends React.Component {
           },
           messageLimit: 20
         });
-
-        currentUser
-          .fetchMultipartMessages({
-            roomId: "19442569"
-          })
-          .then(messages => {
-            this.setState({
-              messages: messages
-            });
-          })
-          .catch(err => {
-            console.log(`Error fetching messages: ${err}`);
-          });
       })
       .catch(err => console.log(err));
   }
 
   send = e => {
     e.preventDefault();
+    // e.persist();
     this.state.user.sendSimpleMessage({
       text: this.state.value,
-      roomId: this.state.user.rooms[2].id
+      roomId: this.state.currentRoom
     });
+    this.state.user
+      .fetchMultipartMessages({
+        roomId: this.state.currentRoom
+      })
+      .then(messages => {
+        // console.log;
+        this.setState({
+          messages: messages
+        });
+      })
+      .catch(err => {
+        console.log(`Error fetching messages: ${err}`);
+      });
   };
 
   handleChange = e => {
     this.setState({ value: e.target.value });
   };
 
+  roomChange = e => {
+    console.log(e.target);
+    e.persist();
+    this.setState({ currentRoom: e.target.id });
+    this.state.user
+      .fetchMultipartMessages({
+        roomId: e.target.id
+      })
+      .then(messages => {
+        // console.log;
+        this.setState({
+          messages: messages
+        });
+      })
+      .catch(err => {
+        console.log(`Error fetching messages: ${err}`);
+      });
+
+    // currentUser.subscribeToRoomMultipart({
+    //   roomId: this.state.currentRoom,
+
+    //   hooks: {
+    //     onMessage: message => {
+    //       let oldMessages = this.state.messages;
+    //       oldMessages.push(message);
+    //       // console.log(currentUser.);
+    //       this.setState({
+    //         messages: oldMessages,
+    //         usersInRoom: currentUser.users.length
+    //       });
+    //     },
+    //     onPresenceChanged: (state, user) => {
+    //       if (user.name === chatManager.userId) {
+    //         console.log(`User ${user.name} is ${state.current}`);
+    //         this.setState({ usersAreActive: state.current });
+    //       }
+    //     }
+    //   },
+    //   messageLimit: 20
+    // });
+  };
+
   render() {
     // console.log(this.state.user);s
     return (
       <div>
-        <h1>Room ({this.state.usersInRoom} users)</h1>
+        <h1>
+          Room{this.state.currentRoom} ({this.state.usersInRoom} users)
+        </h1>
         <form action="">
           <input type="text" onChange={this.handleChange} />
           <input type="submit" onClick={this.send} />
@@ -100,7 +150,11 @@ class Room extends React.Component {
         })}
 
         {this.state.rooms.map(room => {
-          return <button id={room.id}>{room.name}</button>;
+          return (
+            <button key={room.id} id={room.id} onClick={this.roomChange}>
+              {room.name}
+            </button>
+          );
         })}
       </div>
     );
