@@ -1,6 +1,9 @@
 import React from "react";
 import Chatkit from "@pusher/chatkit-client";
 import Message from "./Message.js";
+import MessageContainer from './MessageContainer.js'
+
+let isSet = false;
 
 class Room extends React.Component {
   state = {
@@ -8,7 +11,7 @@ class Room extends React.Component {
     value: "",
     messageToSend: "",
     rooms: [],
-    user: null,
+    user: undefined,
     usersInRoom: 0,
     usersAreActive: "offline",
     currentRoom: null,
@@ -53,7 +56,8 @@ class Room extends React.Component {
             },
             onPresenceChanged: (state, user) => {
               this.setState({ user: currentUser });
-
+              isSet = true;
+              console.log(this.state.user)
               let people = Object.keys(this.state.user.presenceStore).length;
               console.log(people);
               if (people === this.state.usersInRoom) {
@@ -182,7 +186,10 @@ class Room extends React.Component {
           <input type="text" onChange={this.handleChange} />
           <input type="submit" onClick={this.send} />
         </form>
-        <div className="MessagesContainer">
+
+        {isSet && <MessageContainer messages={this.state.messages} userid={this.state.user.id} />}
+        
+        {/* <div className="MessagesContainer">
           {this.state.messages.map(message => {
             return (
               <Message
@@ -193,7 +200,7 @@ class Room extends React.Component {
               />
             );
           })}
-        </div>
+        </div> */}
       </div>
     );
   }

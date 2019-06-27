@@ -33,7 +33,7 @@ class Message extends Component{
         }
         return (
             <li className={"MessageCont " + align}>
-                <div class="MessageAvatar"></div>
+                <div className="MessageAvatar"></div>
                 <p className="MessageUser">{this.props.sender}</p>
                 <p className={"MessageBody " + className}>{this.props.body}</p>
                 <p className={"MessageDate " + align}>{this.timeFormatter()}</p>
