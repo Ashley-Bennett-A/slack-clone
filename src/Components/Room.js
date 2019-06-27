@@ -46,10 +46,8 @@ class Room extends React.Component {
             onMessage: message => {
               let oldMessages = this.state.messages;
               oldMessages.push(message);
-              console.log(this.props.user.users);
               this.setState({
-                messages: oldMessages
-                // usersInRoom: this.props.users.length
+                usersInRoom: user.users.length
               });
             },
             onPresenceChanged: (state, user) => {
@@ -84,8 +82,6 @@ class Room extends React.Component {
 
   send = e => {
     e.preventDefault();
-    // e.persist();
-    console.log(this.state.currentRoom);
     this.state.user.sendSimpleMessage({
       text: this.state.value,
       roomId: this.state.currentRoom
@@ -116,22 +112,22 @@ class Room extends React.Component {
     this.setState({ value: e.target.value });
   };
 
-  roomChange = e => {
-    e.persist();
-    this.setState({ currentRoom: e.target.id });
-    this.state.user
-      .fetchMultipartMessages({
-        roomId: e.target.id
-      })
-      .then(messages => {
-        this.setState({
-          messages: messages
-        });
-      })
-      .catch(err => {
-        console.log(`Error fetching messages: ${err}`);
-      });
-  };
+  // roomChange = e => {
+  //   e.persist();
+  //   this.setState({ currentRoom: e.target.id });
+  //   this.state.user
+  //     .fetchMultipartMessages({
+  //       roomId: e.target.id
+  //     })
+  //     .then(messages => {
+  //       this.setState({
+  //         messages: messages
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.log(`Error fetching messages: ${err}`);
+  //     });
+  // };
 
   render() {
     return (
@@ -140,7 +136,6 @@ class Room extends React.Component {
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
         {this.state.test.map(status => {
-          console.log(status);
           return (
             <div>
               <button>{status}</button>
