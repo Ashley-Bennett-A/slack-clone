@@ -1,6 +1,7 @@
 import React from "react";
-// import Chatkit from "@pusher/chatkit-client";
-import Message from "./Message.js";
+import MessageContainer from './MessageContainer.js'
+import SendBox from './SendBox.js'
+
 let creatingButtons;
 
 
@@ -109,7 +110,7 @@ class Room extends React.Component {
   };
   //#endregion
 
-  
+
 
 
 
@@ -149,26 +150,15 @@ class Room extends React.Component {
         })}
 
         <button onClick={this.createRoom}>New Room</button>
-        <form action="">
-          <input type="text" onChange={this.handleChange} />
-          <input type="submit" onClick={this.send} />
-        </form>
-        <div className="MessagesContainer">
-          {this.state.messagesLoaded ? (
-            this.state.messages.map(message => {
-              return (
-                <Message
-                  user={this.state.user.id}
-                  sender={message.senderId}
-                  body={message.parts[0].payload.content}
-                  date={message.createdAt}
-                />
-              );
-            })
-          ) : (
+
+        {this.state.messagesLoaded ? (
+          <MessageContainer messages={this.state.messages} user={this.state.user} />
+        ) : (
             <h1>No messages</h1>
-          )}
-        </div>
+        )}
+
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />
+
       </div>
     );
   }
