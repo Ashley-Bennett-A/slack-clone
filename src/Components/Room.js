@@ -1,7 +1,7 @@
 import React from "react";
 import Chatkit from "@pusher/chatkit-client";
-import Message from "./Message.js";
 import MessageContainer from './MessageContainer.js'
+import SendBox from './SendBox.js'
 
 let isSet = false;
 
@@ -58,6 +58,7 @@ class Room extends React.Component {
               this.setState({ user: currentUser });
               isSet = true;
               console.log(this.state.user)
+              console.log(this.state.messages)
               let people = Object.keys(this.state.user.presenceStore).length;
               console.log(people);
               if (people === this.state.usersInRoom) {
@@ -139,6 +140,7 @@ class Room extends React.Component {
         this.setState({
           messages: messages
         });
+        
       })
       .catch(err => {
         console.log(`Error fetching messages: ${err}`);
@@ -182,25 +184,11 @@ class Room extends React.Component {
           );
         })}
         <button onClick={this.createRoom}>New Room</button>
-        <form action="">
-          <input type="text" onChange={this.handleChange} />
-          <input type="submit" onClick={this.send} />
-        </form>
 
-        {isSet && <MessageContainer messages={this.state.messages} userid={this.state.user.id} />}
-        
-        {/* <div className="MessagesContainer">
-          {this.state.messages.map(message => {
-            return (
-              <Message
-                user={this.state.user.id}
-                sender={message.senderId}
-                body={message.parts[0].payload.content}
-                date={message.createdAt}
-              />
-            );
-          })}
-        </div> */}
+        {isSet && <MessageContainer messages={this.state.messages} user={this.state.user} />}
+
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />
+
       </div>
     );
   }
