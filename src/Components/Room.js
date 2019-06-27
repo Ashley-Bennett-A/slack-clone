@@ -58,17 +58,20 @@ class Room extends React.Component {
             onPresenceChanged: (state, user) => {
               this.setState({ user: currentUser });
               let array = []
-              let badCode;
+              let checkWhoIsOnline;
               let people = Object.keys(this.state.user.presenceStore).length;
               // console.log(people);
               if (people === this.state.usersInRoom) {
                 Object.keys(this.state.user.presenceStore).forEach(status => {
                   creatingButtons = this.state.user.presenceStore[status]
-                  badCode = status + " " + creatingButtons
-                  console.log(badCode)
-                  if(badCode.split(" ")[1] === "online"){
-                  array.push(badCode)
+                  checkWhoIsOnline = status + " " + creatingButtons
+                  // console.log(checkWhoIsOnline)
+                  if (checkWhoIsOnline.split(" ")[1] === "online"){
+                    array.push(checkWhoIsOnline)
                   }
+
+                  //<WhosOnlineListItem key={index} presenceState="online">
+
                 });
               }
               this.setState({ test: array })
@@ -128,6 +131,9 @@ class Room extends React.Component {
   };
   //#endregion
 
+  //file Share jquery
+
+ 
   
 
 
@@ -185,6 +191,7 @@ class Room extends React.Component {
         <h1>
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
+
         {this.state.test.map(status => {
           console.log(status)
           return (
