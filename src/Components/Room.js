@@ -1,6 +1,7 @@
 import React from "react";
-import Chatkit from "@pusher/chatkit-client";
-import Message from "./Message.js";
+import MessageContainer from './MessageContainer.js'
+import SendBox from './SendBox.js'
+
 let creatingButtons;
 
 
@@ -9,81 +10,76 @@ class Room extends React.Component {
     messages: [],
     value: "",
     messageToSend: "",
-    rooms: [],
     user: null,
     usersInRoom: 0,
     usersAreActive: "offline",
     currentRoom: null,
     peopleInRoom: {},
-
+    messagesLoaded: false,
     test: []
   };
 
   componentDidMount() {
-    const tokenProvider = new Chatkit.TokenProvider({
-      url:
-        "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/e26280f8-acac-4da9-9e2a-80cd549547f8/token"
-    });
-
-    const chatManager = new Chatkit.ChatManager({
-      instanceLocator: "v1:us1:e26280f8-acac-4da9-9e2a-80cd549547f8",
-
-      userId: "jz",
-
-      tokenProvider: tokenProvider
-    });
-
-    chatManager
+    this.props.manager
       .connect()
-      .then(currentUser => {
+      .then(user => {
         this.setState({
-          user: currentUser,
-          rooms: currentUser.rooms,
-          currentRoom: currentUser.rooms[0].id
+          currentRoom: this.props.room,
+          user: user,
+          messages: user
         });
-        // console.log(currentUser.rooms);
-        currentUser.subscribeToRoomMultipart({
-          roomId: this.state.currentRoom,
-
+        this.state.user
+          .fetchMultipartMessages({
+            roomId: this.props.room
+          })
+          .then(messages => {
+            console.log(messages);
+            this.setState({
+              messages: messages,
+              messagesLoaded: true
+            });
+          })
+          .catch(err => {
+            console.log(`Error fetching messages: ${err}`);
+          });
+        user.subscribeToRoomMultipart({
+          roomId: this.props.room,
           hooks: {
             onMessage: message => {
               let oldMessages = this.state.messages;
-
               oldMessages.push(message);
               this.setState({
-                messages: oldMessages,
-                usersInRoom: currentUser.users.length
+                usersInRoom: user.users.length
               });
             },
             onPresenceChanged: (state, user) => {
-              this.setState({ user: currentUser });
-              let array = []
-              let checkWhoIsOnline;
+              this.setState({ user: this.state.user });
+              let array = [];
+              let badCode;
               let people = Object.keys(this.state.user.presenceStore).length;
               // console.log(people);
               if (people === this.state.usersInRoom) {
                 Object.keys(this.state.user.presenceStore).forEach(status => {
-                  creatingButtons = this.state.user.presenceStore[status]
-                  checkWhoIsOnline = status + " " + creatingButtons
-                  // console.log(checkWhoIsOnline)
-                  if (checkWhoIsOnline.split(" ")[1] === "online"){
-                    array.push(checkWhoIsOnline)
+                  creatingButtons = this.state.user.presenceStore[status];
+                  badCode = status + " " + creatingButtons;
+                  console.log(badCode);
+                  if (badCode.split(" ")[1] === "online") {
+                    array.push(badCode);
                   }
 
                   //<WhosOnlineListItem key={index} presenceState="online">
 
                 });
               }
-              this.setState({ test: array })
+              this.setState({ test: array });
               this.setState({ peopleInRoom: this.state.user.presenceStore });
 
-              if (user.name === chatManager.userId) {
+              if (user.name === this.props.manager.userId) {
                 // console.log(`User ${user.name} is ${state.current}`)
                 this.setState({ usersAreActive: state.current });
               }
             }
-          },
-          messageLimit: 20
+          }
         });
       })
       .catch(err => console.log(err));
@@ -91,24 +87,10 @@ class Room extends React.Component {
 
   send = e => {
     e.preventDefault();
-    // e.persist();
     this.state.user.sendSimpleMessage({
       text: this.state.value,
       roomId: this.state.currentRoom
     });
-    // this.state.user
-    //   .fetchMultipartMessages({
-    //     roomId: this.state.currentRoom
-    //   })
-    //   .then(messages => {
-    //     // console.log;
-    //     this.setState({
-    //       messages: messages
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(`Error fetching messages: ${err}`);
-    //   });
   };
 
   //#region Create Room
@@ -131,10 +113,6 @@ class Room extends React.Component {
   };
   //#endregion
 
-  //file Share jquery
-
- 
-  
 
 
 
@@ -142,48 +120,22 @@ class Room extends React.Component {
     this.setState({ value: e.target.value });
   };
 
-  roomChange = e => {
-    console.log(e.target);
-    e.persist();
-    this.setState({ currentRoom: e.target.id });
-    this.state.user
-      .fetchMultipartMessages({
-        roomId: e.target.id
-      })
-      .then(messages => {
-        // console.log;
-        this.setState({
-          messages: messages
-        });
-      })
-      .catch(err => {
-        console.log(`Error fetching messages: ${err}`);
-      });
-
-      
-    // currentUser.subscribeToRoomMultipart({
-    //   roomId: this.state.currentRoom,
-
-    //   hooks: {
-    //     onMessage: message => {
-    //       let oldMessages = this.state.messages;
-    //       oldMessages.push(message);
-    //       // console.log(currentUser.);
-    //       this.setState({
-    //         messages: oldMessages,
-    //         usersInRoom: currentUser.users.length
-    //       });
-    //     },
-    //     onPresenceChanged: (state, user) => {
-    //       if (user.name === chatManager.userId) {
-    //         console.log(`User ${user.name} is ${state.current}`);
-    //         this.setState({ usersAreActive: state.current });
-    //       }
-    //     }
-    //   },
-    //   messageLimit: 20
-    // });
-  };
+  // roomChange = e => {
+  //   e.persist();
+  //   this.setState({ currentRoom: e.target.id });
+  //   this.state.user
+  //     .fetchMultipartMessages({
+  //       roomId: e.target.id
+  //     })
+  //     .then(messages => {
+  //       this.setState({
+  //         messages: messages
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.log(`Error fetching messages: ${err}`);
+  //     });
+  // };
 
   render() {
     return (
@@ -193,37 +145,23 @@ class Room extends React.Component {
         </h1>
 
         {this.state.test.map(status => {
-          console.log(status)
           return (
             <div>
               <button>{status}</button>
             </div>
-          )
-        })}
-        {this.state.rooms.map(room => {
-          return (
-            <button key={room.id} id={room.id} onClick={this.roomChange}>
-              {room.name}
-            </button>
           );
         })}
+
         <button onClick={this.createRoom}>New Room</button>
-        <form action="">
-          <input type="text" onChange={this.handleChange} />
-          <input type="submit" onClick={this.send} />
-        </form>
-        <div className="MessagesContainer">
-          {this.state.messages.map(message => {
-            return (
-              <Message
-                user={this.state.user.id}
-                sender={message.senderId}
-                body={message.parts[0].payload.content}
-                date={message.createdAt}
-              />
-            );
-          })}
-        </div>
+
+        {this.state.messagesLoaded ? (
+          <MessageContainer messages={this.state.messages} user={this.state.user} />
+        ) : (
+            <h1>No messages</h1>
+        )}
+
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />
+
       </div>
     );
   }

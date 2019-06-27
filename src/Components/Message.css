@@ -1,11 +1,13 @@
 .MessagesContainer {
     display: grid;
+    padding: 5px;
+    background: #eeeeee
 }
 
 .MessageCont {
     padding: 4px;
-    margin: 10px;
-    display: grid;
+    margin-top: 10px;
+    display: flex;
 }
 
 .MessageCont p {
@@ -38,9 +40,19 @@
 .Right {
     text-align: left;
     justify-self: right;
+    flex-flow: row-reverse;
 }
 
 
 li {
     max-width: 80%
+}
+
+.MessageAvatar {
+    height: 35px;
+    width: 35px;
+}
+
+.userInfo {
+    padding: 5px;
 }
