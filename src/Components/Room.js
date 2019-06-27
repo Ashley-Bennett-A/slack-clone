@@ -3,6 +3,7 @@ import React from "react";
 import Message from "./Message.js";
 let creatingButtons;
 
+
 class Room extends React.Component {
   state = {
     messages: [],
@@ -51,7 +52,7 @@ class Room extends React.Component {
               });
             },
             onPresenceChanged: (state, user) => {
-              // this.setState({ user: this.state.user });
+              this.setState({ user: this.state.user });
               let array = [];
               let badCode;
               let people = Object.keys(this.state.user.presenceStore).length;
@@ -92,8 +93,8 @@ class Room extends React.Component {
   createRoom = () => {
     this.state.user
       .createRoom({
-        name: "testAGain",
-        private: true,
+        name: `New ${this.state.user.id} Room`,
+        private: false,
         addUserIds: ["AB", "CR"],
         customData: {
           foo: 42
@@ -107,6 +108,10 @@ class Room extends React.Component {
       });
   };
   //#endregion
+
+  
+
+
 
   handleChange = e => {
     this.setState({ value: e.target.value });
