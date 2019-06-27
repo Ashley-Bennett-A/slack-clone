@@ -5,17 +5,10 @@ import Chatkit from "@pusher/chatkit-client";
 
 class App extends React.Component {
   state = {
-    messages: [],
-    value: "",
-    messageToSend: "",
     rooms: [],
     user: null,
-    usersInRoom: 0,
-    usersAreActive: "offline",
     currentRoom: null,
-    peopleInRoom: {},
-    manager: null,
-    room: null
+    manager: null
   };
 
   componentDidMount() {
