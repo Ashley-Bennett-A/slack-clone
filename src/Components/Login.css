@@ -1,7 +1,7 @@
 .login {
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 300px;
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
@@ -41,4 +41,30 @@
 .login i:active {
   transform: scale(0.8);
   cursor: pointer;
+}
+
+.login .true {
+  animation-name: shake;
+  animation-duration: 0.4s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(10px);
+  }
+  20% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  60% {
+    transform: translateX(-10px);
+  }
+  80% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
