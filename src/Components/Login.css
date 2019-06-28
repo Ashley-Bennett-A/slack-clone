@@ -1,0 +1,44 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+}
+.login input {
+  text-align: center;
+  margin: 20px;
+  border-radius: 8px;
+  outline: hidden;
+  height: 30px;
+  font-size: 20px;
+}
+
+.login input:focus {
+  outline: none;
+}
+
+.login i {
+  margin: 20px;
+  background: linear-gradient(to top right, #00c6ff, #0072ff);
+  /* border: 2px black solid; */
+  border-radius: 8px;
+  user-select: none;
+  transition: 100ms ease-in-out;
+  /* height: 30px; */
+  text-align: center;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+}
+
+.login i:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.login i:active {
+  transform: scale(0.8);
+  cursor: pointer;
+}
