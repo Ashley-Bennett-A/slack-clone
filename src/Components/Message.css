@@ -1,7 +1,9 @@
 .MessagesContainer {
     display: grid;
     padding: 5px;
-    background: #eeeeee
+    padding-bottom: 50px;
+    overflow: scroll;
+    height: 71.5vh;
 }
 
 .MessageCont {
