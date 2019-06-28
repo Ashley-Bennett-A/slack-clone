@@ -14,6 +14,7 @@ class MessageContainer extends Component {
     componentDidMount() {
         this.setState({ messages: this.props.messages, user: this.props.user })
         this.autoScroll();
+        console.log(this.state.messages)
     }
 
     componentDidUpdate() {
@@ -26,7 +27,6 @@ class MessageContainer extends Component {
                 {this.state.messages.map(message => {
                     return (
                         <Message
-                            mKey={message.id}
                             user={this.state.user.id}
                             avatar={this.state.user.avatarUrl}
                             sender={message.senderId}
