@@ -1,7 +1,7 @@
 import React from "react";
-import MessageContainer from './MessageContainer.js'
-import SendBox from './SendBox.js'
-import UserStatus from './UserStatus.js'
+import MessageContainer from "./MessageContainer.js";
+import SendBox from "./SendBox.js";
+import UserStatus from "./UserStatus.js";
 
 let creatingButtons;
 
@@ -26,8 +26,8 @@ class Room extends React.Component {
       .then(user => {
         this.setState({
           currentRoom: this.props.room,
-          user: user,
-          messages: user
+          user: user
+          // messages: user
         });
         this.state.user
           .fetchMultipartMessages({
@@ -42,16 +42,19 @@ class Room extends React.Component {
           })
           .catch(err => {
             console.log(`Error fetching messages: ${err}`);
+            this.setState({ messagesLoaded: true });
           });
         user.subscribeToRoomMultipart({
           roomId: this.props.room,
           hooks: {
             onMessage: message => {
-              let oldMessages = this.state.messages;
-              oldMessages.push(message);
-              this.setState({
-                usersInRoom: user.users.length
-              });
+              if (this.state.messages) {
+                let oldMessages = this.state.messages;
+                oldMessages.push(message);
+                this.setState({
+                  usersInRoom: user.users.length
+                });
+              }
             },
             onPresenceChanged: (state, user) => {
               this.setState({ user: this.state.user });
@@ -67,13 +70,11 @@ class Room extends React.Component {
                   console.log(badCode);
                   if (badCode.split(" ")[1] === "online") {
                     array.push(badCode);
-                    
-                  }else{
-                    arrayOff.push(badCode)
+                  } else {
+                    arrayOff.push(badCode);
                   }
 
                   //<WhosOnlineListItem key={index} presenceState="online">
-
                 });
               }
               this.setState({ test: array, peopleOffline: arrayOff });
@@ -84,7 +85,8 @@ class Room extends React.Component {
                 this.setState({ usersAreActive: state.current });
               }
             }
-          }
+          },
+          messageLimit: 100
         });
       })
       .catch(err => console.log(err));
@@ -102,7 +104,7 @@ class Room extends React.Component {
       text: this.state.value,
       roomId: this.state.currentRoom
     });
-    this.setState({value: ""})
+    this.setState({ value: "" });
   };
 
   //#region Create Room
@@ -118,7 +120,6 @@ class Room extends React.Component {
       })
       .then(room => {
         console.log(`Created room called ${room.name}`);
-      
       })
       .catch(err => {
         console.log(`Error creating room ${err}`);
@@ -137,17 +138,13 @@ class Room extends React.Component {
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
 
-    <div className="UserContainer">
-        {this.state.peopleOffline.map(status => {
-          return (
-              <UserStatus status={status}/>
-          );
-        })}
+        <div className="UserContainer">
+          {this.state.peopleOffline.map(status => {
+            return <UserStatus status={status} />;
+          })}
 
           {this.state.test.map(status => {
-            return (
-              <UserStatus status={status}/>
-            );
+            return <UserStatus status={status} />;
           })}
         </div>
 
