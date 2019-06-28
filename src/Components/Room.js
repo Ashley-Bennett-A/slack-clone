@@ -5,7 +5,6 @@ import UserStatus from './UserStatus.js'
 
 let creatingButtons;
 
-
 class Room extends React.Component {
   state = {
     messages: [],
@@ -69,6 +68,7 @@ class Room extends React.Component {
                   }
                 });
               }
+              console.log(this.state.user.roomSubscriptions)
               this.setState({ test: array });
               this.setState({ peopleInRoom: this.state.user.presenceStore });
 
@@ -81,6 +81,12 @@ class Room extends React.Component {
         });
       })
       .catch(err => console.log(err));
+  }
+
+  componentWillUnmount() {
+    console.log("unsubbed");
+    console.log(this.props.user.roomSubscriptions);
+    // this.props.user.roomSubcriptions[this.props.room].cancel();
   }
 
   send = e => {
@@ -112,30 +118,9 @@ class Room extends React.Component {
   };
   //#endregion
 
-
-
-
-
   handleChange = e => {
     this.setState({ value: e.target.value });
   };
-
-  // roomChange = e => {
-  //   e.persist();
-  //   this.setState({ currentRoom: e.target.id });
-  //   this.state.user
-  //     .fetchMultipartMessages({
-  //       roomId: e.target.id
-  //     })
-  //     .then(messages => {
-  //       this.setState({
-  //         messages: messages
-  //       });
-  //     })
-  //     .catch(err => {
-  //       console.log(`Error fetching messages: ${err}`);
-  //     });
-  // };
 
   render() {
     return (
@@ -147,7 +132,7 @@ class Room extends React.Component {
         <div className="UserContainer">
           {this.state.test.map(status => {
             return (
-              <UserStatus status={status} />
+              <UserStatus status={status}/>
             );
           })}
         </div>
@@ -155,13 +140,15 @@ class Room extends React.Component {
         <button onClick={this.createRoom}>New Room</button>
 
         {this.state.messagesLoaded ? (
-          <MessageContainer messages={this.state.messages} user={this.state.user} />
+          <MessageContainer
+            messages={this.state.messages}
+            user={this.state.user}
+          />
         ) : (
-            <h1>No messages</h1>
+          <h1>No messages</h1>
         )}
-
+        <div className="MessageFader">FILLME</div>
         <SendBox changeHandler={this.handleChange} submitter={this.send} />
-
       </div>
     );
   }

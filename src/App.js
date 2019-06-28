@@ -50,6 +50,26 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
+  roomChange = e => {
+    this.setState({
+      room: null
+    });
+    let roomId = e.target.id;
+
+    const newRoom = () => {
+      return this.setState({
+        room: (
+          <Room
+            room={roomId}
+            manager={this.state.manager}
+            user={this.state.user}
+          />
+        )
+      });
+    };
+    setTimeout(newRoom, 100);
+  };
+
   render() {
     return (
       <div className="App">
