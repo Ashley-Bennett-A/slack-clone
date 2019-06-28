@@ -1,6 +1,7 @@
 import React from "react";
 import MessageContainer from './MessageContainer.js'
 import SendBox from './SendBox.js'
+import UserStatus from './UserStatus.js'
 
 let creatingButtons;
 
@@ -88,6 +89,7 @@ class Room extends React.Component {
       text: this.state.value,
       roomId: this.state.currentRoom
     });
+    this.setState({value: ""})
   };
 
   //#region Create Room
@@ -141,13 +143,14 @@ class Room extends React.Component {
         <h1>
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
-        {this.state.test.map(status => {
-          return (
-            <div>
-              <button>{status}</button>
-            </div>
-          );
-        })}
+
+        <div className="UserContainer">
+          {this.state.test.map(status => {
+            return (
+              <UserStatus status={status} />
+            );
+          })}
+        </div>
 
         <button onClick={this.createRoom}>New Room</button>
 
