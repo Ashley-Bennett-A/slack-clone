@@ -42,6 +42,7 @@ class App extends React.Component {
   loggin = e => {
     // console.log(userID);
     e.preventDefault();
+    this.setState({ logInFail: false });
     const tokenProvider = new Chatkit.TokenProvider({
       url:
         "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/e26280f8-acac-4da9-9e2a-80cd549547f8/token"
@@ -91,7 +92,11 @@ class App extends React.Component {
         {this.state.loggedIn ? (
           console.log("Logging in")
         ) : (
-          <Login loggin={this.loggin} changeHandler={this.handleLogInChange} />
+          <Login
+            loggin={this.loggin}
+            loginFail={this.state.logInFail}
+            changeHandler={this.handleLogInChange}
+          />
         )}
 
         {this.state.logInFail ? (
