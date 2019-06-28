@@ -2,6 +2,7 @@ import React from "react";
 import MessageContainer from './MessageContainer.js'
 import SendBox from './SendBox.js'
 import UserStatus from './UserStatus.js'
+import './Room.css';
 
 let creatingButtons;
 
@@ -132,7 +133,7 @@ class Room extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="RoomContainer">
         <h1>
           Room {this.state.currentRoom} ({this.state.usersInRoom} users)
         </h1>
@@ -161,7 +162,7 @@ class Room extends React.Component {
         ) : (
           <h1>No messages</h1>
         )}
-        <div className="MessageFader">FILLME</div>
+        {/* <div className="MessageFader">FILLME</div> */}
         <SendBox changeHandler={this.handleChange} submitter={this.send} />
       </div>
     );

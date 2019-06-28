@@ -5,6 +5,8 @@
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
+  font-family: 'Quicksand';
+  font-weight: 700;
 }
 .login input {
   text-align: center;
@@ -13,6 +15,7 @@
   outline: hidden;
   height: 30px;
   font-size: 20px;
+  font-family: 'Quicksand';
 }
 
 .login input:focus {
