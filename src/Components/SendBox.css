@@ -1,0 +1,28 @@
+.SendContainer {
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    width: 100vw;
+    background: #c5c5c5;
+    text-align: left;
+    display: flex;
+}
+
+.sendBar {
+    width: 80%;
+    text-align: left;
+    border-radius: 10px;
+    border: none;
+    margin: 4px;
+    padding: 2px;
+}
+
+.sendButton {
+    font-size: 25px;
+    align-self: center;
+    color: #0261e5;
+}
+
+.sendButton:hover {
+    color: #029ae5;
+}

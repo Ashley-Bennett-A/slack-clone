@@ -7,8 +7,17 @@ class MessageContainer extends Component {
         user: null
     }
 
+    autoScroll = () => {
+        this.messagesEnd.scrollIntoView({behaviour: 'smooth'})
+    }
+
     componentDidMount() {
         this.setState({ messages: this.props.messages, user: this.props.user })
+        this.autoScroll();
+    }
+
+    componentDidUpdate() {
+        this.autoScroll();
     }
 
     render(props) {
@@ -26,6 +35,9 @@ class MessageContainer extends Component {
                         />
                     );
                 })}
+                <div ref={(el) => {this.messagesEnd = el}}>
+                    
+                </div>
             </div>
         )
     }
