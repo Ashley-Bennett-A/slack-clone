@@ -2,6 +2,7 @@ import React from "react";
 import MessageContainer from "./MessageContainer.js";
 import SendBox from "./SendBox.js";
 import UserStatus from "./UserStatus.js";
+import "./Room.css";
 
 let creatingButtons;
 
@@ -42,7 +43,9 @@ class Room extends React.Component {
           })
           .catch(err => {
             console.log(`Error fetching messages: ${err}`);
-            this.setState({ messagesLoaded: true });
+            this.setState({
+              messagesLoaded: true
+            });
           });
         user.subscribeToRoomMultipart({
           roomId: this.props.room,
@@ -57,7 +60,9 @@ class Room extends React.Component {
               }
             },
             onPresenceChanged: (state, user) => {
-              this.setState({ user: this.state.user });
+              this.setState({
+                user: this.state.user
+              });
               let array = [];
               let arrayOff = [];
               let badCode;
@@ -77,12 +82,19 @@ class Room extends React.Component {
                   //<WhosOnlineListItem key={index} presenceState="online">
                 });
               }
-              this.setState({ test: array, peopleOffline: arrayOff });
-              this.setState({ peopleInRoom: this.state.user.presenceStore });
+              this.setState({
+                test: array,
+                peopleOffline: arrayOff
+              });
+              this.setState({
+                peopleInRoom: this.state.user.presenceStore
+              });
 
               if (user.name === this.props.manager.userId) {
                 // console.log(`User ${user.name} is ${state.current}`)
-                this.setState({ usersAreActive: state.current });
+                this.setState({
+                  usersAreActive: state.current
+                });
               }
             }
           },
@@ -104,7 +116,9 @@ class Room extends React.Component {
       text: this.state.value,
       roomId: this.state.currentRoom
     });
-    this.setState({ value: "" });
+    this.setState({
+      value: ""
+    });
   };
 
   //#region Create Room
@@ -128,38 +142,38 @@ class Room extends React.Component {
   //#endregion
 
   handleChange = e => {
-    this.setState({ value: e.target.value });
+    this.setState({
+      value: e.target.value
+    });
   };
 
   render() {
     return (
-      <div>
+      <div className="RoomContainer">
         <h1>
-          Room {this.state.currentRoom} ({this.state.usersInRoom} users)
+          Room {this.state.currentRoom}({this.state.usersInRoom}
+          users){" "}
         </h1>
-
         <div className="UserContainer">
+          {" "}
           {this.state.peopleOffline.map(status => {
             return <UserStatus status={status} />;
           })}
-
           {this.state.test.map(status => {
             return <UserStatus status={status} />;
-          })}
+          })}{" "}
         </div>
-
-        <button onClick={this.createRoom}>New Room</button>
-
+        <button onClick={this.createRoom}> New Room </button>
         {this.state.messagesLoaded ? (
           <MessageContainer
             messages={this.state.messages}
             user={this.state.user}
           />
         ) : (
-          <h1>No messages</h1>
-        )}
-        <div className="MessageFader">FILLME</div>
-        <SendBox changeHandler={this.handleChange} submitter={this.send} />
+          <h1> No messages </h1>
+        )}{" "}
+        {/* <div className="MessageFader">FILLME</div> */}{" "}
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />{" "}
       </div>
     );
   }

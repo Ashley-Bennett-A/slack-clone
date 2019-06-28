@@ -6,6 +6,7 @@
     background: #c5c5c5;
     text-align: left;
     display: flex;
+    justify-content: center;
 }
 
 .sendBar {
@@ -16,12 +17,15 @@
     margin: 4px;
     padding: 2px;
     padding-left: 20px;
+    font-family: 'Quicksand';
+    font-weight: 500;
 }
 
 .sendButton {
     font-size: 25px;
     align-self: center;
     color: #0261e5;
+    margin-left: 30px;
 }
 
 .sendButton:hover {
