@@ -5,6 +5,7 @@ import SendBox from './SendBox.js'
 let creatingButtons;
 
 
+
 class Room extends React.Component {
   state = {
     messages: [],
@@ -16,7 +17,8 @@ class Room extends React.Component {
     currentRoom: null,
     peopleInRoom: {},
     messagesLoaded: false,
-    test: []
+    test: [],
+    peopleOffline: []
   };
 
   componentDidMount() {
@@ -55,9 +57,10 @@ class Room extends React.Component {
             onPresenceChanged: (state, user) => {
               this.setState({ user: this.state.user });
               let array = [];
+              let arrayOff = [];
               let badCode;
               let people = Object.keys(this.state.user.presenceStore).length;
-              // console.log(people);
+              console.log(this.state.user);
               if (people === this.state.usersInRoom) {
                 Object.keys(this.state.user.presenceStore).forEach(status => {
                   creatingButtons = this.state.user.presenceStore[status];
@@ -65,13 +68,16 @@ class Room extends React.Component {
                   console.log(badCode);
                   if (badCode.split(" ")[1] === "online") {
                     array.push(badCode);
+                    
+                  }else{
+                    arrayOff.push(badCode)
                   }
 
                   //<WhosOnlineListItem key={index} presenceState="online">
 
                 });
               }
-              this.setState({ test: array });
+              this.setState({ test: array, peopleOffline: arrayOff });
               this.setState({ peopleInRoom: this.state.user.presenceStore });
 
               if (user.name === this.props.manager.userId) {
@@ -106,13 +112,13 @@ class Room extends React.Component {
       })
       .then(room => {
         console.log(`Created room called ${room.name}`);
+      
       })
       .catch(err => {
         console.log(`Error creating room ${err}`);
       });
   };
   //#endregion
-
 
 
 
@@ -147,7 +153,14 @@ class Room extends React.Component {
         {this.state.test.map(status => {
           return (
             <div>
-              <button>{status}</button>
+              <button >{status}</button>
+            </div>
+          );
+        })}
+        {this.state.peopleOffline.map(status => {
+          return (
+            <div>
+              <button >{status}</button>
             </div>
           );
         })}
