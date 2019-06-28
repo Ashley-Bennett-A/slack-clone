@@ -1,6 +1,4 @@
 .UserStatus {
-    border: 2px solid #24C157;
-    background: #24c17e;
     border-radius: 15px;
     height: 20px;
     width: 100px;
@@ -13,4 +11,14 @@
 
 .UserContainer {
     display: flex
+}
+
+.online {
+    border: 2px solid #24C157;
+    background: #24c17e;
+}
+
+.offline {
+    border: 2px solid #c12440;
+    background: #c12f24;
 }
