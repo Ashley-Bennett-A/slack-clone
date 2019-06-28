@@ -1,6 +1,5 @@
 import React from "react";
-// import './Login.css'
-// import { directive } from '@babel/types';
+import "./Login.css";
 
 const Login = props => {
   return (
