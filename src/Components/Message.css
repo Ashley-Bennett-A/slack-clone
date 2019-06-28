@@ -3,7 +3,7 @@
     padding: 5px;
     padding-bottom: 50px;
     overflow: scroll;
-    height: 71.5vh;
+    height: 74vh;
 }
 
 .MessageCont {
@@ -60,8 +60,53 @@ li {
 }
 
 .MessageFader {
+    z-index: 10;
     color: rgba(255, 255, 255, 0);
     border: 1px solid black;
     background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
-    background: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
+    background: -moz-linear-gradient(to top, rgba(138, 15, 15, 1) 0%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
 }
+
+@media screen and (max-width: 360px) {
+    .MessageCont p {
+        overflow-wrap: break-word;
+        max-width: 260px;
+    }
+
+    .MessagesContainer {
+        height: 61vh;
+    }
+
+  }
+
+  @media screen and (max-width: 375px) {
+    .MessageCont p {
+        overflow-wrap: break-word;
+        max-width: 260px;
+    }
+
+    .MessagesContainer {
+        height: 57vh;
+    }
+
+  }
+
+
+  @media screen and (max-width: 414px) {
+    .MessageCont p {
+        overflow-wrap: break-word;
+        max-width: 260px;
+    }
+
+    .MessagesContainer {
+        height: 66vh;
+    }
+
+  }
+
+  @media screen and (min-height: 896px) and (max-height: 900px) {
+    .MessagesContainer {
+        height: 72vh;
+    }
+
+  }

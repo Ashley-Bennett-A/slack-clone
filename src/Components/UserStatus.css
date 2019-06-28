@@ -7,18 +7,22 @@
 
 .UserStatus p {
     margin: 0;
+    font-family: 'Quicksand';
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .UserContainer {
-    display: flex
+    display: flex;
+    justify-content: center;
 }
 
 .online {
-    border: 2px solid #24C157;
-    background: #24c17e;
+    border: 2px solid #1b8f5d;
+    background: #24C157;
 }
 
 .offline {
     border: 2px solid #c12440;
-    background: #c12f24;
+    background: #94241c;
 }
