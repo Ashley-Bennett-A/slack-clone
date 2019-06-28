@@ -45,7 +45,7 @@ class Message extends Component {
                 </div>
                 <div>
                     <p className={"MessageBody " + className}>{this.props.body}</p>
-                    <p className={"MessageDate " + align}>{this.timeFormatter()}</p>
+                    <p className={"MessageDate " + align}>{this.timeFormatter()} {this.props.sender}</p>
                 </div>
             </li>
         )
