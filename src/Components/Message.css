@@ -17,7 +17,7 @@
 }
 
 .MessageDate {
-    color: #cccccc;
+    color: grey;
     text-align: right;
 }
 
@@ -57,4 +57,11 @@ li {
 
 .userInfo {
     padding: 5px;
+}
+
+.MessageFader {
+    color: rgba(255, 255, 255, 0);
+    border: 1px solid black;
+    background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
+    background: -moz-linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
 }
