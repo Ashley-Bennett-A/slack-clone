@@ -14,7 +14,6 @@ class MessageContainer extends Component {
     componentDidMount() {
         this.setState({ messages: this.props.messages, user: this.props.user })
         this.autoScroll();
-        console.log(this.state.messages)
     }
 
     componentDidUpdate() {
