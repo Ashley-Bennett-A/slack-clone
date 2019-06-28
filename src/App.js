@@ -36,13 +36,17 @@ class App extends React.Component {
   };
 
   handleLogInChange = e => {
-    this.setState({ logInValue: e.target.value });
+    this.setState({
+      logInValue: e.target.value
+    });
   };
 
   loggin = e => {
     // console.log(userID);
     e.preventDefault();
-    this.setState({ logInFail: false });
+    this.setState({
+      logInFail: false
+    });
     const tokenProvider = new Chatkit.TokenProvider({
       url:
         "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/e26280f8-acac-4da9-9e2a-80cd549547f8/token"
@@ -82,7 +86,9 @@ class App extends React.Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({ logInFail: true });
+        this.setState({
+          logInFail: true
+        });
       });
   };
 
@@ -98,20 +104,25 @@ class App extends React.Component {
             changeHandler={this.handleLogInChange}
           />
         )}
-
         {this.state.logInFail ? (
-          <h1>No user by that ID. Try again.</h1>
+          <h1> No user by that ID.Try again. </h1>
         ) : (
           console.log("Successfully Logged in")
         )}
-
-        {this.state.rooms.map(room => {
-          return (
-            <button key={room.id} id={room.id} onClick={this.roomChange}>
-              {room.name}
-            </button>
-          );
-        })}
+        <div className="roomList">
+          {this.state.rooms.map(room => {
+            return (
+              <i
+                className="roomNames"
+                key={room.id}
+                id={room.id}
+                onClick={this.roomChange}
+              >
+                {room.name}
+              </i>
+            );
+          })}
+        </div>
         {this.state.room}
       </div>
     );

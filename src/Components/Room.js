@@ -145,25 +145,24 @@ class Room extends React.Component {
     this.setState({
       value: e.target.value
     });
+    console.log(this.state.user.rooms);
   };
 
   render() {
     return (
       <div className="RoomContainer">
         <h1>
-          Room {this.state.currentRoom}({this.state.usersInRoom}
-          users){" "}
+          Room {this.state.currentRoom} ({this.state.usersInRoom}
+          users)
         </h1>
         <div className="UserContainer">
-          {" "}
           {this.state.peopleOffline.map(status => {
             return <UserStatus status={status} />;
           })}
           {this.state.test.map(status => {
             return <UserStatus status={status} />;
-          })}{" "}
+          })}
         </div>
-        <button onClick={this.createRoom}> New Room </button>
         {this.state.messagesLoaded ? (
           <MessageContainer
             messages={this.state.messages}
@@ -171,9 +170,8 @@ class Room extends React.Component {
           />
         ) : (
           <h1> No messages </h1>
-        )}{" "}
-        {/* <div className="MessageFader">FILLME</div> */}{" "}
-        <SendBox changeHandler={this.handleChange} submitter={this.send} />{" "}
+        )}
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />
       </div>
     );
   }
