@@ -23,11 +23,16 @@ class App extends React.Component {
 
     const newRoom = () => {
       return this.setState({
-        room: (
-          <Room
-            room={roomId}
-            manager={this.state.manager}
-            user={this.state.user}
+        room: ( <
+          Room room = {
+            roomId
+          }
+          manager = {
+            this.state.manager
+          }
+          user = {
+            this.state.user
+          }
           />
         )
       });
@@ -48,8 +53,7 @@ class App extends React.Component {
       logInFail: false
     });
     const tokenProvider = new Chatkit.TokenProvider({
-      url:
-        "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/e26280f8-acac-4da9-9e2a-80cd549547f8/token"
+      url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/e26280f8-acac-4da9-9e2a-80cd549547f8/token"
     });
 
     const chatManager = new Chatkit.ChatManager({
@@ -73,11 +77,16 @@ class App extends React.Component {
         const createRoom = room => {
           return this.setState({
             loggedIn: true,
-            room: (
-              <Room
-                room={room}
-                manager={this.state.manager}
-                user={this.state.user}
+            room: ( <
+              Room room = {
+                room
+              }
+              manager = {
+                this.state.manager
+              }
+              user = {
+                this.state.user
+              }
               />
             )
           });
@@ -93,38 +102,53 @@ class App extends React.Component {
   };
 
   render() {
-    return (
-      <div className="App">
-        {this.state.loggedIn ? (
+    return ( <
+      div className = "App" > {
+        this.state.loggedIn ? (
           console.log("Logging in")
-        ) : (
-          <Login
-            loggin={this.loggin}
-            loginFail={this.state.logInFail}
-            changeHandler={this.handleLogInChange}
+        ) : ( <
+          Login loggin = {
+            this.loggin
+          }
+          loginFail = {
+            this.state.logInFail
+          }
+          changeHandler = {
+            this.handleLogInChange
+          }
           />
-        )}
-        {this.state.logInFail ? (
-          <h1> No user by that ID.Try again. </h1>
+        )
+      } {
+        this.state.logInFail ? ( <
+          h1 > No user by that ID.Try again. < /h1>
         ) : (
           console.log("Successfully Logged in")
-        )}
-        <div className="roomList">
-          {this.state.rooms.map(room => {
-            return (
-              <i
-                className="roomNames"
-                key={room.id}
-                id={room.id}
-                onClick={this.roomChange}
-              >
-                {room.name}
-              </i>
-            );
-          })}
-        </div>
-        {this.state.room}
-      </div>
+        )
+      } <
+      div className = "roomList" > {
+        this.state.rooms.map(room => {
+          return ( <
+            i className = "roomNames"
+            key = {
+              room.id
+            }
+            id = {
+              room.id
+            }
+            onClick = {
+              this.roomChange
+            } >
+            {
+              room.name
+            } <
+            /i>
+          );
+        })
+      } <
+      /div> {
+        this.state.room
+      } <
+      /div>
     );
   }
 }

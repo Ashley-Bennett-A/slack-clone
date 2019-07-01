@@ -6,14 +6,16 @@ const Login = props => {
   if (className) {
     return (
       <div className="login">
-        <input
-          type="text"
-          placeholder="Case sensitive ID please..."
-          onChange={props.changeHandler}
-        />
-        <i type="submit" className="true" onClick={props.loggin}>
-          Login
-        </i>
+        <form onSubmit={props.loggin}>
+          <input
+            type="text"
+            placeholder="Case sensitive ID please..."
+            onChange={props.changeHandler}
+          />
+          <i type="submit" className="true" onClick={props.loggin}>
+            Login
+          </i>
+        </form>
       </div>
     );
   } else {

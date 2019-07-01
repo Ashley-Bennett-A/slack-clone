@@ -5,7 +5,7 @@
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
-  font-family: 'Quicksand';
+  font-family: "Quicksand";
   font-weight: 700;
 }
 .login input {
@@ -15,7 +15,7 @@
   outline: hidden;
   height: 30px;
   font-size: 20px;
-  font-family: 'Quicksand';
+  font-family: "Quicksand";
 }
 
 .login input:focus {
@@ -42,7 +42,7 @@
 }
 
 .login i:active {
-  transform: scale(0.8);
+  transform: scale(1);
   cursor: pointer;
 }
 
