@@ -152,10 +152,10 @@ class Room extends React.Component {
         </h1>{" "}
         <div className="UserContainer">
           {" "}
-          {this.state.peopleOffline.map(status => {
+          {this.state.test.map(status => {
             return <UserStatus status={status} />;
           })}{" "}
-          {this.state.test.map(status => {
+          {this.state.peopleOffline.map(status => {
             return <UserStatus status={status} />;
           })}{" "}
         </div>{" "}
