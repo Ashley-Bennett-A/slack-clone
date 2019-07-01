@@ -27,37 +27,37 @@ class Room extends React.Component {
       .then(user => {
         this.setState({
           currentRoom: this.props.room,
-          user: user
-          // messages: user
+          user: user,
+          messagesLoaded: true
         });
-        this.state.user
-          .fetchMultipartMessages({
-            roomId: this.props.room
-          })
-          .then(messages => {
-            console.log(messages);
-            this.setState({
-              messages: messages,
-              messagesLoaded: true
-            });
-          })
-          .catch(err => {
-            console.log(`Error fetching messages: ${err}`);
-            this.setState({
-              messagesLoaded: true
-            });
-          });
-        user.subscribeToRoomMultipart({
+        // this.state.user
+        //   .fetchMultipartMessages({
+        //     roomId: this.props.room
+        //   })
+        //   .then(messages => {
+        //     console.log(messages);
+        //     this.setState({
+        //       messages: messages,
+        //       messagesLoaded: true
+        //     });
+        //   })
+        //   .catch(err => {
+        //     console.log(`Error fetching messages: ${err}`);
+        //     this.setState({
+        //       messagesLoaded: true
+        //     });
+        //   });
+        this.state.user.subscribeToRoomMultipart({
           roomId: this.props.room,
           hooks: {
             onMessage: message => {
-              if (this.state.messages) {
-                let oldMessages = this.state.messages;
-                oldMessages.push(message);
-                this.setState({
-                  usersInRoom: user.users.length
-                });
-              }
+              let oldMessages = this.state.messages;
+              oldMessages.push(message);
+              this.setState({
+                usersInRoom: user.users.length,
+                messages: oldMessages
+              });
+              //
             },
             onPresenceChanged: (state, user) => {
               this.setState({
@@ -67,12 +67,10 @@ class Room extends React.Component {
               let arrayOff = [];
               let badCode;
               let people = Object.keys(this.state.user.presenceStore).length;
-              console.log(this.state.user);
               if (people === this.state.usersInRoom) {
                 Object.keys(this.state.user.presenceStore).forEach(status => {
                   creatingButtons = this.state.user.presenceStore[status];
                   badCode = status + " " + creatingButtons;
-                  console.log(badCode);
                   if (badCode.split(" ")[1] === "online") {
                     array.push(badCode);
                   } else {
@@ -91,7 +89,6 @@ class Room extends React.Component {
               });
 
               if (user.name === this.props.manager.userId) {
-                // console.log(`User ${user.name} is ${state.current}`)
                 this.setState({
                   usersAreActive: state.current
                 });
@@ -107,7 +104,6 @@ class Room extends React.Component {
   componentWillUnmount() {
     console.log("unsubbed");
     console.log(this.props.user.roomSubscriptions);
-    // this.props.user.roomSubcriptions[this.props.room].cancel();
   }
 
   send = e => {
@@ -145,24 +141,24 @@ class Room extends React.Component {
     this.setState({
       value: e.target.value
     });
-    console.log(this.state.user.rooms);
   };
 
   render() {
     return (
       <div className="RoomContainer">
         <h1>
-          Room {this.state.currentRoom} ({this.state.usersInRoom}
-          users)
-        </h1>
+          Room {this.state.currentRoom}({this.state.usersInRoom}
+          users){" "}
+        </h1>{" "}
         <div className="UserContainer">
+          {" "}
           {this.state.peopleOffline.map(status => {
             return <UserStatus status={status} />;
-          })}
+          })}{" "}
           {this.state.test.map(status => {
             return <UserStatus status={status} />;
-          })}
-        </div>
+          })}{" "}
+        </div>{" "}
         {this.state.messagesLoaded ? (
           <MessageContainer
             messages={this.state.messages}
@@ -170,8 +166,8 @@ class Room extends React.Component {
           />
         ) : (
           <h1> No messages </h1>
-        )}
-        <SendBox changeHandler={this.handleChange} submitter={this.send} />
+        )}{" "}
+        <SendBox changeHandler={this.handleChange} submitter={this.send} />{" "}
       </div>
     );
   }
