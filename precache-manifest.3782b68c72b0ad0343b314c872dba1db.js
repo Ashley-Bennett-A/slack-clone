@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c4182d9e1271109805984da7e3c00e2f",
+    "revision": "0adbfcb7adee1d47a7cf527495883c5b",
     "url": "/slack-clone/index.html"
   },
   {
