@@ -1,8 +1,9 @@
 .UserStatus {
     border-radius: 15px;
     height: 20px;
-    width: 100px;
+    width: 120px;
     margin: 2px;
+    padding: 2px;
 }
 
 .UserStatus p {
@@ -25,4 +26,12 @@
 .offline {
     border: 2px solid #c12440;
     background: #94241c;
+}
+
+@media screen and (max-width: 550px) {
+    .UserContainer {
+        max-height: 30px;
+        overflow-y: scroll;
+        flex-wrap: wrap;
+    }
 }
