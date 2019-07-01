@@ -2,6 +2,7 @@
   "name": "slack-clone",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Ashley-Bennet-A.github.io/slack-clone",
   "dependencies": {
     "@pusher/chatkit-client": "^1.6.0",
     "@pusher/chatkit-server": "^1.3.0",
@@ -11,6 +12,8 @@
     "react-scripts": "3.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
